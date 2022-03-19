@@ -10,7 +10,7 @@ class AppGame extends FlameGame with HasDraggables, HasCollisionDetection {
   late final JoystickPlayer player;
 
   @override
-  bool get debugMode => false;
+  bool get debugMode => true;
 
   @override
   Future<void>? onLoad() async {
