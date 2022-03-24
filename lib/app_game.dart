@@ -2,38 +2,27 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mimimal_flame/components/chair.component.dart';
 import 'package:mimimal_flame/components/player.component.dart';
+import 'package:mimimal_flame/helper.dart';
 
 class AppGame extends FlameGame with HasDraggables, HasCollisionDetection {
   late final JoystickComponent joystickComponent;
-  late final JoystickPlayer player;
+  late final Player player;
 
   @override
   bool get debugMode => true;
 
   @override
   Future<void>? onLoad() async {
-    await setChairs();
+    await addCollidableBlocks(this);
 
     await setJoystick();
-    player = JoystickPlayer(joystickComponent);
+    player = Player(joystick: joystickComponent);
     await add(player);
 
     camera.followComponent(player);
 
     return super.onLoad();
-  }
-
-  Future<void> setChairs() async {
-    final components = <ChairComponent>[];
-    for (int idx = 0; idx < 1000; idx++) {
-      final pos = idx * 32.0;
-      final component = ChairComponent(id: idx, position: Vector2(pos, pos));
-      components.add(component);
-    }
-
-    await addAll(components);
   }
 
   Future<void> setJoystick() async {

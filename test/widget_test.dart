@@ -5,26 +5,52 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'package:flame/game.dart';
+import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mimimal_flame/components/player.component.dart';
+import 'package:mimimal_flame/helper.dart';
 
-import 'package:mimimal_flame/main.dart';
+class HasCollidablesGame extends FlameGame with HasCollisionDetection {}
+
+final withCollidables = FlameTester(() => HasCollidablesGame());
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group("infinite collision reproduce", () {
+    withCollidables.test("etst", (game) async {
+      final player = Player();
+      await game.add(player);
+      await addCollidableBlocks(game);
+      final centerOfOneOfBlock = Vector2(1120, 1120);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      player.position = Vector2(
+        centerOfOneOfBlock.x,
+        centerOfOneOfBlock.y + 100,
+      ); // no sides are overlaps
+      game.update(0);
+      expect(player.startCount, 0);
+      expect(player.collisionCount, 0);
+      expect(player.endCount, 0);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      player.position = Vector2(
+        centerOfOneOfBlock.x,
+        centerOfOneOfBlock.y + 10,
+      ); // two sides are overlaps
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      game.update(0);
+      expect(player.startCount, 1);
+      expect(player.collisionCount, 1);
+      expect(player.endCount, 0); // <---- this is the point that fails test
+
+      game.update(0);
+      expect(player.startCount, 1);
+      expect(player.collisionCount, 2);
+      expect(player.endCount, 0);
+
+      game.update(0);
+      expect(player.startCount, 1);
+      expect(player.collisionCount, 3);
+      expect(player.endCount, 0);
+    });
   });
 }
