@@ -37,14 +37,13 @@ dependencies:
   flame:
     git:
       url: https://github.com/flame-engine/flame.git
-      ref: main
+      ref: spydon.fix-on-top-collisions
       path: packages/flame
 dependency_overrides: 
-
   flame:
     git:
       url: https://github.com/flame-engine/flame.git
-      ref: main
+      ref: spydon.fix-on-top-collisions
       path: packages/flame
 dev_dependencies:
   flutter_test:

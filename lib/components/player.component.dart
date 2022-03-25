@@ -56,7 +56,7 @@ class Player extends PositionComponent
     other as TestBlock;
     endCount++;
     print(
-        "collision end: other: ${other.center} id:${other.id} center: ${other.center} me: $center size: $size");
+        "collision end: other: ${other.center} id:${other.id} size: ${other.size} me: $center size: $size");
   }
 
   @override

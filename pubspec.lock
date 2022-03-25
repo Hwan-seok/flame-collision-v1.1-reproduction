@@ -117,8 +117,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/flame"
-      ref: main
-      resolved-ref: e6312e6fea424e2a9c34304c544018a8f2ad7f1e
+      ref: "spydon.fix-on-top-collisions"
+      resolved-ref: "89b66d4760b2d56e3c646e54dc63bf9f4027ce89"
       url: "https://github.com/flame-engine/flame.git"
     source: git
     version: "1.1.0-releasecandidate.6"
